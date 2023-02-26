@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <iostream>
 
 #include "linux_parser.h"
 
@@ -107,7 +108,7 @@ long LinuxParser::Jiffies() { return 0; }
 
 // TODO: Read and return the number of active jiffies for a PID
 // REMOVE: [[maybe_unused]] once you define the function
-std::tuple<long, long, long, long> LinuxParser::ActiveJiffies(int pid) {
+std::tuple<unsigned long, unsigned long, long, long> LinuxParser::ActiveJiffies(int pid) {
   string line, utime, stime, cutime, cstime;
   std::ifstream stream(kProcDirectory + to_string(pid) + kStatFilename);
   if (stream.is_open()) {
@@ -116,8 +117,10 @@ std::tuple<long, long, long, long> LinuxParser::ActiveJiffies(int pid) {
     for(int i = 0; i < 14; i++){ linestream >> utime; }
     linestream >> stime >> cutime >> cstime;
   }
-  return std::make_tuple<long, long, long, long>(std::stol(utime)/sysconf(_SC_CLK_TCK), std::stol(stime)/sysconf(_SC_CLK_TCK),
-                                                 std::stol(cutime)/sysconf(_SC_CLK_TCK), std::stol(cstime)/sysconf(_SC_CLK_TCK));
+  return std::make_tuple<unsigned long, unsigned long, long, long>(std::stoul(utime)/sysconf(_SC_CLK_TCK), 
+                                                                   std::stoul(stime)/sysconf(_SC_CLK_TCK),
+                                                                   std::stol(cutime)/sysconf(_SC_CLK_TCK),
+                                                                   std::stol(cstime)/sysconf(_SC_CLK_TCK));
 }
 
 // TODO: Read and return the number of active jiffies for the system
@@ -201,7 +204,7 @@ string LinuxParser::Ram(int pid) {
       }
     }
   }
-  return string();
+  return "0";
 }
 
 // TODO: Read and return the user ID associated with a process

@@ -21,8 +21,8 @@ int Process::Pid() const { return pid_; }
 float Process::CpuUtilization() const {
   //extract numbers from /proc/[pid]/stat
   std::tuple<long, long, long, long> processTimes = LinuxParser::ActiveJiffies(pid_);
-  long uTime = std::get<0>(processTimes);
-  long sTime = std::get<1>(processTimes);
+  unsigned long uTime = std::get<0>(processTimes);
+  unsigned long sTime = std::get<1>(processTimes);
   long cuTime = std::get<2>(processTimes);
   long csTime = std::get<3>(processTimes);
   
