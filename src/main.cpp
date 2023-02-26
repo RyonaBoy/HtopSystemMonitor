@@ -3,5 +3,8 @@
 
 int main() {
   System system;
+  //std::vector<Process> tmp = system.Processes();
+  //tmp[0].CpuUtilization();
+  
   NCursesDisplay::Display(system);
 }
